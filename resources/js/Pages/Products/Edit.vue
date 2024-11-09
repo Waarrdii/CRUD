@@ -8,19 +8,18 @@
         </div>
         <button type="submit"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-        <DangerButton @click.prevent="deleteRecord">Hapus</DangerButton>
+
     </form>
-    
+    <div>
+        <Link :href="route('products.destroy', product.id)" method="DELETE" as="button">
+        Hapus
+        </Link>
+    </div>
 </template>
 
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import DangerButton from '@/Components/DangerButton.vue';
-
-
-const deleteRecord = () => {
-    Inertia.delete(route('products.destroy',product.id));
-}
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     product: Object,
