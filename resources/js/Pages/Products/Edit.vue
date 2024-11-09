@@ -16,12 +16,16 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
 
+const props = defineProps({
+    product: Object,
+})
+
 const form = useForm({
-    name: '',
+    name: props.product.name,
 });
 
 const submit = () => {
-    form.post(route('products.store'));
+    form.put(route('products.update', props.product.id, form));
 };
 
 </script>

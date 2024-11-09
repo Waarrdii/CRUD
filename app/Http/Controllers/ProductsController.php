@@ -36,6 +36,8 @@ class ProductsController extends Controller
     public function store(ProductRequest $request)
     {
         product::create($request->validated());
+
+        return redirect()->route('products.index');
     }
 
     /**
@@ -51,15 +53,19 @@ class ProductsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return Inertia::render('Products/Edit', ['product' => product::find($id)]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, string $id)
     {
-        //
+        $product = Product::find($id); if ($product) { 
+            $product->update($request->validated());
+            return redirect()->route('products.index')->with('success', 'Product updated successfully.'); 
+        } 
+        return redirect()->route('products.index')->with('error', 'Product not found.');
     }
 
     /**
