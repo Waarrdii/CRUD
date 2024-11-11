@@ -63,7 +63,7 @@
 
     <div class="inline-flex rounded-md shadow-sm mt-5 ml-5">
 
-        <Link :href="route('products.create')" @click.prevent="showModalForm"
+        <Link :href="route('products.create')"
             class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
         New Data
         </Link>
@@ -73,15 +73,6 @@
         </a>
     </div>
 
-
-    <!-- modal form -->
-    <div v-if="showModal" id="editUserModal" tabindex="-1"
-        class="fixed top-0 left-0 right-0 z-50 items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative w-full max-w-2xl max-h-full">
-            <!-- Modal content -->
-            <slot />
-        </div>
-    </div>
 
 </template>
 
@@ -113,33 +104,15 @@ const selectAll = (event) => {
 const selectedIds = ref([]);
 
 const deleteSelected = () => {
-    axios.delete(route('products.multipleDestroy'), {
-        data: { ids: selectedIds.value },
-        timeout: 10000,
-    })
-    Inertia.reload({ only: ['products'] });
-}
-
-const showModal = ref(false);
-const showModalForm = () => {
-    showModal.value = true;
-}
-
-const closeModalForm = () => {
-    showModal.value = false;
-}
-
-const submitForm = () => {
-    form.post('/products',
-        {
-
-            onSuccess: () => {
-                closeModalForm();
-            },
-            onError: (errors) => {
-                console.error('Error submitting form:', errors);
-            }
-        });
+    if (confirm("Hapus data product dipilih ?")){
+        axios.delete(route('products.multipleDestroy'), {
+            data: { ids: selectedIds.value },
+            timeout: 10000,
+        }).then(() => {
+            Inertia.reload({ only: ['products'] });
+        })
+        
+    }
 }
 
 </script>
