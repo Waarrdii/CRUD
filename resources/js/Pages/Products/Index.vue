@@ -31,7 +31,8 @@
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4">
                         <div class="flex items-center">
-                            <input id="checkbox-table-search-1" type="checkbox"
+                            <input id="checkbox-table-search-1" type="checkbox" v-model="selectedIds"
+                                :value="product.id"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                         </div>
@@ -62,9 +63,9 @@
 
         <Link :href="route('products.create')" @click.prevent="showModalForm"
             class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
-            New Data
+        New Data
         </Link>
-        <a href="#"
+        <a href="#" @click="deleteSelected"
             class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
             Delete
         </a>
@@ -76,7 +77,7 @@
         class="fixed top-0 left-0 right-0 z-50 items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-2xl max-h-full">
             <!-- Modal content -->
-           <slot />
+            <slot />
         </div>
     </div>
 
@@ -85,6 +86,9 @@
 <script setup>
 import { ref } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3'
+import axios from 'axios';
+import { Inertia } from '@inertiajs/inertia'
+
 
 const props = defineProps({
     products: Array
@@ -92,7 +96,26 @@ const props = defineProps({
 
 const form = useForm({
     name: '',
+    ids: [],
 });
+
+const toggleAll = (event) => {
+    if (event.target.checked) {
+        selectedIds.value = props.products.map(product => product.id);
+    } else {
+        selectedIds.value = [];
+    }
+};
+
+const selectedIds = ref([]);
+
+const deleteSelected = () => {
+    axios.delete(route('products.multipleDestroy'), {
+        data: { ids: selectedIds.value },
+        timeout: 10000,
+    })
+    Inertia.reload({ only: ['products'] });
+}
 
 const showModal = ref(false);
 const showModalForm = () => {
@@ -104,17 +127,16 @@ const closeModalForm = () => {
 }
 
 const submitForm = () => {
-    form.post('/products', 
-    {
-
-        onSuccess: () => 
+    form.post('/products',
         {
-            closeModalForm();
-        },
-        onError: (errors) => {
-            console.error('Error submitting form:', errors);
-        }
-    });
+
+            onSuccess: () => {
+                closeModalForm();
+            },
+            onError: (errors) => {
+                console.error('Error submitting form:', errors);
+            }
+        });
 }
 
 </script>

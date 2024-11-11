@@ -78,4 +78,17 @@ class ProductsController extends Controller
         $product -> delete();
         return redirect()->route('products.index');
     }
+
+    public function multipleDestroy(Request $request)
+{
+    $ids = $request->ids;
+    try {
+        product::whereIn('id', $ids)->delete();
+        return response()->json(['success' => "Data deleted successfully."]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
+    
 }
