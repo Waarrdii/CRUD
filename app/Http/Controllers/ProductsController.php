@@ -15,11 +15,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        // Mengambil semua produk dan mengubahnya menggunakan ProductResource
-        $products = ProductResource::collection(product::all())->resolve();
-
-        // Merender tampilan dengan Inertia dan mengirim data yang diformatkan menggunakan ProductResource
-        return Inertia::render('Products/Index', ['products' => $products]);
+        $products = Product::with('brand')->get();
+        return Inertia::render('Products/Index', [
+            'products' => ProductResource::collection($products)->resolve()
+        ]);
     }
 
     /**

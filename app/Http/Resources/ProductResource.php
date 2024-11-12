@@ -17,6 +17,11 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'brand' => $this->brand?
+            [
+                'id' => $this->brand->id,
+                'name' => $this->brand->name,
+            ]:null,
             'created_at' => $this->created_at->format('d-m-y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-y H:i:s'),
         ];
