@@ -38,7 +38,7 @@
 
     <div class="inline-flex mt-5 ml-5 space-x-2">
         <PrimaryButton @click="newData">New Data</PrimaryButton>
-        <DangerButton @click="deleteSelected">Delete</DangerButton>
+        <DangerButton @click="deleteSelected" :disabled="selectedIds.length === 0">Delete</DangerButton>
     </div>
 
 
