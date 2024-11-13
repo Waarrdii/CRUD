@@ -90,7 +90,7 @@ const deleteSelected = () => {
             data: { ids: selectedIds.value },
             timeout: 10000,
         }).then(() => {
-            Inertia.reload({ only: ['products'] });
+            router.reload({ only: ['products'] });
         })
 
     }
