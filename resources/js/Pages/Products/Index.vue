@@ -46,7 +46,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import axios from 'axios';
 import { Inertia } from '@inertiajs/inertia'
 import UrlLink from '@/Components/UrlLink.vue';
@@ -82,7 +82,7 @@ const selectAll = (event) => {
 const selectedIds = ref([]);
 
 const newData = () => {
-    Inertia.get(route('products.create'));
+    router.get(route('products.create'));
 }
 const deleteSelected = () => {
     if (confirm("Hapus data product dipilih ?")) {
