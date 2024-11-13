@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Http\Resources\BrandResource;
 use App\Http\Resources\ProductResource;
+use App\Models\brand;
 use App\Models\product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -26,7 +28,10 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Products/Create');
+        $brands = brand::all();
+        return Inertia::render('Products/Create',[
+            'brands' => BrandResource::collection($brands)->resolve()
+        ]);
     }
 
     /**

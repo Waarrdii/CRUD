@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
 Route::resource('products', ProductsController::class);
 Route::delete('products', [ProductsController::class, 'multipleDestroy'])->name('products.multipleDestroy');
 
+Route::resource('brands', 'App\Http\Controllers\BrandController');
+
 
 
 require __DIR__.'/auth.php';

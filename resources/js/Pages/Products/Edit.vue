@@ -18,7 +18,6 @@
 
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import { Link } from '@inertiajs/vue3';
 import DangerButton from '@/Components/DangerButton.vue';
 import SaveButton from '@/Components/SaveButton.vue';
 

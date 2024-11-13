@@ -41,7 +41,7 @@
         <DangerButton @click="deleteSelected" :disabled="selectedIds.length === 0">Delete</DangerButton>
     </div>
 
-
+    
 </template>
 
 <script setup>
@@ -62,7 +62,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 
 const props = defineProps({
-    products: Array
+    products: Array,
 })
 
 const form = useForm({
@@ -73,6 +73,7 @@ const form = useForm({
 const selectAll = (event) => {
     if (event.target.checked) {
         selectedIds.value = props.products.map(product => product.id);
+        console.log(props.brands);
     } else {
         selectedIds.value = [];
     }
@@ -94,6 +95,7 @@ const deleteSelected = () => {
 
     }
 }
+
 
 </script>
 
