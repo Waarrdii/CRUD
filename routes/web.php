@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Tabs', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -29,6 +29,8 @@ Route::resource('products', ProductsController::class);
 Route::delete('products', [ProductsController::class, 'multipleDestroy'])->name('products.multipleDestroy');
 
 Route::resource('brands', 'App\Http\Controllers\BrandController');
+
+Route::get('brands/{brand}/products', 'App\Http\Controllers\BrandProductController@index')->name('brands.products.index');
 
 
 

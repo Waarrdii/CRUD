@@ -15,7 +15,7 @@ const props = defineProps({
     }
 });
 
-const classes = 'font-medium text-blue-600 dark:text-blue-500 hover:underline'
+const classes = 'hover:underline'
 
 </script>
 
