@@ -10,7 +10,7 @@
             <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brand</label>
             <input type="text" id="brand" @click="showModal"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Brand" required v-model="form.brand" />
+                placeholder="Brand" required v-model="form.brand_name"/>
         </div>
         <div class="mb-5">
             <Modal :show="modalShow">
@@ -31,9 +31,9 @@
                                             stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                     </svg>
                                 </div>
-                                <input type="search" id="default-search"
+                                <input type="search" id="default-search" v-model="searchQuery"
                                     class="block w-full p-4 ps-10 text-sm text-gray-900 border border-transparent rounded-lg bg-gray-50  focus:border-0 focus:ring-0 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-0"
-                                    placeholder="Search Mockups, Logos..." required />
+                                    placeholder="Search Brands..." required />
                             </div>
                         </form>
                         </div>
@@ -44,7 +44,7 @@
                         <div class="space-y-4">
                             <ul>
                                 <li class="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-                                v-for="brand in props.brands" :key="brand.id"
+                                v-for="brand in filteredBrands" :key="brand.id"
                                 @click="selectBrand(brand)"
                                 >
                                 {{ brand.name }}
@@ -73,14 +73,21 @@
 </template>
 
 <script setup>
-import { useForm } from '@inertiajs/vue3';
-import { ref, defineProps } from 'vue';
+import { useForm, usePage } from '@inertiajs/vue3';
+import { ref, defineProps, computed } from 'vue';
 import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
-    brands: Array
-})
+    brands: Array,
+});
 
+const filteredBrands = computed(() => {
+    return props.brands.filter(
+        brand => brand.name.includes(searchQuery.value)
+    );
+});
+
+const searchQuery = ref('');
 const modalShow = ref(false);
 
 const showModal = () => {
@@ -95,16 +102,19 @@ const closeModal = () => {
 const form = useForm({
     name: '',
     brand_id: '',
+    brand_name: '',
 });
+const selectBrand = (brand) => {
+    form.brand_name = brand.name;
+    form.brand_id = brand.id;
+    closeModal();
+}
+
 
 const submit = () => {
     form.post(route('products.store'));
 };
 
-const selectBrand = (brand) => {
-    form.brand_id = brand.id;
-    closeModal();
-}
 
 </script>
 

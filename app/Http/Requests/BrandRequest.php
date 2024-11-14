@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductRequest extends FormRequest
+class BrandRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,7 +23,6 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'brand_id' => ['required', 'integer', 'exists:brands,id'],
         ];
     }
 }
