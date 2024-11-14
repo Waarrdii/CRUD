@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -28,9 +29,10 @@ Route::middleware('auth')->group(function () {
 Route::resource('products', ProductsController::class);
 Route::delete('products', [ProductsController::class, 'multipleDestroy'])->name('products.multipleDestroy');
 
-Route::resource('brands', 'App\Http\Controllers\BrandController');
+Route::resource('brands', BrandController::class);
+Route::get('brands', [BrandController::class, 'showAllBrands'])->name('brands.showAllBrands');
 
-Route::get('brands/{brand}/products', 'App\Http\Controllers\BrandProductController@index')->name('brands.products.index');
+Route::get('brands/{brand}/products', [BrandProductController::class, 'index'])->name('brands.products.index');
 
 
 

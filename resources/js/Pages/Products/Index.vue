@@ -1,5 +1,4 @@
 <template>
-<Tabs>
     <TableComponent>
         <template #header>
             <TableHead>
@@ -43,14 +42,12 @@
         <PurpleButton>Export</PurpleButton>
         <GreenButton>Import</GreenButton>
     </div>
-</Tabs>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { router, useForm } from '@inertiajs/vue3'
 import axios from 'axios';
-import { Inertia } from '@inertiajs/inertia'
 import UrlLink from '@/Components/UrlLink.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 
@@ -63,7 +60,6 @@ import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import PurpleButton from '@/Components/PurpleButton.vue';
 import GreenButton from '@/Components/GreenButton.vue';
-import Tabs from '../Tabs.vue';
 
 
 

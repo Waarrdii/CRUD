@@ -20,6 +20,11 @@ class BrandController extends Controller
         ]);
     }
 
+    public function showAllBrands()
+    {
+        $brands = brand::all();
+        return response()->json($brands);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -41,7 +46,7 @@ class BrandController extends Controller
      */
     public function show(brand $brand)
     {
-        //
+        
     }
 
     /**

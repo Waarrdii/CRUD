@@ -1,25 +1,27 @@
 <template>
-    <div>
-        <h1>Brands</h1>
-        <table class="w-full">
-            <tr>
-                <th>id</th>
-                <th>name</th>
-            </tr>
-            <tr v-for="brand in brands" :key="brand.id">
-                <td>{{ brand.id }}</td>
-                <td>{{ brand.name }}</td>
-            </tr>
-        </table>
-    </div>
+<Welcome>
+    <template #header>
+        <h1>Data Brands</h1>
+    </template>
+    <template #default>
+        <Index :items="brands" :columns="columns"></Index>
+    </template>
+</Welcome>
+    
 </template>
+    
+
 
 <script setup>
+import { ref } from 'vue';
+import Index from '@/Components/Index.vue';
+import Welcome from '../Welcome.vue';
+
 const props = defineProps({
-    brands:Array,
+    brands: Array,
 })
+
+const columns = ref(Object.keys(props.brands[0]));
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

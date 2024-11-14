@@ -13,23 +13,22 @@
     class="m-5 w-auto flex flex-start"
     v-if="activeTab.length > 0">
         <div v-for="(tab, index) in activeTab" :key="tab.id">
-            <div id="showProduct" v-show="tab.active">
-                <!-- component Product/Index.vue akan di muat disini -->
-                 <slot/>
+            <div v-show="tab.active">
+                <Index :items="brandsData" :columns="columns"></Index>
             </div>
         </div>
     </div>
    
-    <PrimaryButton @click="addTab">Activate Tab</PrimaryButton>
-
-    <Link :href="route('products.index')" @click="addTab">link product</Link>
+    <PrimaryButton @click="addTab()">Activate Tab</PrimaryButton>
 
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
+
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import Index from '@/Components/Index.vue';
+
 
 const activeTab = ref([]);
 
@@ -48,6 +47,20 @@ const activateTab = (index)=>{
     })
 }
 
+const brandsData = ref([]);
+const columns = ref([]);
+onMounted( async() => {
+    try {
+        const response = await axios.get(route('brands.showAllBrands'));
+        brandsData.value = response.data;
+        if(brandsData.value.length > 0){
+            columns.value = Object.keys(brandsData.value[0]);
+        }
+    } catch (error) {
+console.log(error);
+    }
+console.log(brandsData.value);
+});
 </script>
 
 <style lang="scss" scoped>
