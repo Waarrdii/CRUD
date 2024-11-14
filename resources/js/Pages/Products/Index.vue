@@ -1,5 +1,4 @@
 <template>
-<Tabs>
     <TableComponent>
         <template #header>
             <TableHead>
@@ -44,7 +43,6 @@
         <GreenButton>Import</GreenButton>
     </div>
 
-</Tabs>
 </template>
 
 <script setup>
