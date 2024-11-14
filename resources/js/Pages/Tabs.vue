@@ -1,18 +1,49 @@
 <template>
-    <div class="flex justify-start m-2 border-b-2">
-        <div class="border rounded-t-md p-2">Tab 1</div>
-        <div class="border rounded-t-md p-2">Tab 2</div>
-        <div class="border rounded-t-md p-2">Tab 3</div>
-        <div class="border rounded-t-md p-2">Tab 4</div>
-        <div class="border rounded-t-md p-2">Tab 5</div>
-
+    <div 
+    class="m-5 w-auto flex flex-start"
+    v-if="activeTab.length > 0">
+        <div v-for="(tab, index) in activeTab" :key="tab.id"
+        @click="activateTab(index)"
+        class="first:rounded-tl-md last:rounded-tr-md border-r bg-gray-100 p-2 hover:bg-gray-200 cursor-pointer">
+            <div class="">Tab {{ tab.id }}</div>
+            
+        </div>
+    </div>
+    <div
+    class="m-5 w-auto flex flex-start"
+    v-if="activeTab.length > 0">
+        <div v-for="(tab, index) in activeTab" :key="tab.id">
+            <p v-show="tab.active">
+                Tab :{{ tab.id }} <br/>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident praesentium nihil reprehenderit necessitatibus magnam nisi dolorem error aperiam adipisci! Distinctio dolore alias magni illo, magnam corporis tenetur exercitationem at. Consequatur?
+            </p>
+        </div>
     </div>
    
+    <PrimaryButton @click="addTab">Activate Tab</PrimaryButton>
+
 </template>
 
 <script setup>
-import NavLink from '@/Components/NavLink.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { ref } from 'vue';
 
+const activeTab = ref([]);
+
+const addTab = () => {
+    const newValue = {
+        id:activeTab.value.length + 1,
+        active:false,
+    };
+    activeTab.value = [...activeTab.value, newValue];
+    activateTab(activeTab.value.length - 1);
+};
+
+const activateTab = (index)=>{
+    activeTab.value.forEach((tab, i)=>{
+        tab.active = (i === index);
+    })
+}
 
 </script>
 
