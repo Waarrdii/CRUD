@@ -13,19 +13,22 @@
     class="m-5 w-auto flex flex-start"
     v-if="activeTab.length > 0">
         <div v-for="(tab, index) in activeTab" :key="tab.id">
-            <p v-show="tab.active">
-                Tab :{{ tab.id }} <br/>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident praesentium nihil reprehenderit necessitatibus magnam nisi dolorem error aperiam adipisci! Distinctio dolore alias magni illo, magnam corporis tenetur exercitationem at. Consequatur?
-            </p>
+            <div id="showProduct" v-show="tab.active">
+                <!-- component Product/Index.vue akan di muat disini -->
+                 <slot/>
+            </div>
         </div>
     </div>
    
     <PrimaryButton @click="addTab">Activate Tab</PrimaryButton>
 
+    <Link :href="route('products.index')" @click="addTab">link product</Link>
+
 </template>
 
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const activeTab = ref([]);

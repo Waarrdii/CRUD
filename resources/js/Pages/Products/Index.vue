@@ -1,4 +1,5 @@
 <template>
+<Tabs>
     <TableComponent>
         <template #header>
             <TableHead>
@@ -42,7 +43,7 @@
         <PurpleButton>Export</PurpleButton>
         <GreenButton>Import</GreenButton>
     </div>
-
+</Tabs>
 </template>
 
 <script setup>
