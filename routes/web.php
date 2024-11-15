@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('products', ProductsController::class);
 Route::delete('products', [ProductsController::class, 'multipleDestroy'])->name('products.multipleDestroy');
+Route::get('products', [ProductsController::class, 'showAllProducts'])->name('products.showAllProducts');
 
 Route::resource('brands', BrandController::class);
 Route::get('brands', [BrandController::class, 'showAllBrands'])->name('brands.showAllBrands');

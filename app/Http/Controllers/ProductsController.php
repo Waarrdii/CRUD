@@ -12,6 +12,11 @@ use Inertia\Inertia;
 
 class ProductsController extends Controller
 {
+    public function showAllProducts()
+    {
+        $products = product::all();
+        return response()->json($products);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +34,7 @@ class ProductsController extends Controller
     public function create()
     {
         $brands = brand::all();
-        return Inertia::render('Products/Create',[
+        return Inertia::render('Products/Create', [
             'brands' => BrandResource::collection($brands)->resolve()
         ]);
     }
@@ -39,7 +44,7 @@ class ProductsController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        
+
         product::create($request->validated());
 
         return redirect()->route('products.index');
@@ -66,10 +71,11 @@ class ProductsController extends Controller
      */
     public function update(ProductRequest $request, string $id)
     {
-        $product = Product::find($id); if ($product) { 
+        $product = Product::find($id);
+        if ($product) {
             $product->update($request->validated());
-            return redirect()->route('products.index')->with('success', 'Product updated successfully.'); 
-        } 
+            return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        }
         return redirect()->route('products.index')->with('error', 'Product not found.');
     }
 
@@ -80,20 +86,18 @@ class ProductsController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        $product -> delete();
+        $product->delete();
         return redirect()->route('products.index');
     }
 
     public function multipleDestroy(Request $request)
-{
-    $ids = $request->ids;
-    try {
-        product::whereIn('id', $ids)->delete();
-        return response()->json(['success' => "Data deleted successfully."]);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
+    {
+        $ids = $request->ids;
+        try {
+            product::whereIn('id', $ids)->delete();
+            return response()->json(['success' => "Data deleted successfully."]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
-}
-
-    
 }
