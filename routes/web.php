@@ -27,6 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//route product, brands, dll harus di buat satu per satu tidak dengan route source, kemudian dengan spatie cegah akses route selain untuk menampilkan data json.
+
 Route::resource('products', ProductsController::class);
 Route::delete('products', [ProductsController::class, 'multipleDestroy'])->name('products.multipleDestroy');
 Route::get('products', [ProductsController::class, 'showAllProducts'])->name('products.showAllProducts');
