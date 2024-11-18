@@ -14,7 +14,7 @@
     v-if="activeTab.length > 0">
         <div v-for="(tab, index) in activeTab" :key="tab.id">
             <div v-show="tab.active">
-                <Index :items="tab.data" :columns="tab.columns"></Index>
+                <Index :items="tab.data" :columns="tab.columns" :tabName="tab.id"></Index>
             </div>
         </div>
     </div>
@@ -25,9 +25,10 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, provide, ref } from 'vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Index from '@/Components/Index.vue';
+
 
 
 const activeTab = ref([]);
@@ -42,10 +43,6 @@ const openTab = async(tabName) => {
     let response;
     let columns;
     const existTab = activeTab.value.findIndex(tab => tab.id === tabName);
-    if (existTab !== -1) {
-        activateTab(existTab);
-        return;
-    }
     if (tabName === 'brands') {
         response = await axios.get(route('brands.showAllBrands'));
         columns = ref(Object.keys(response.data[0]));
@@ -53,16 +50,23 @@ const openTab = async(tabName) => {
         response = await axios.get(route('products.showAllProducts'));
         columns = ref(Object.keys(response.data[0]));
     }
-    
-    activeTab.value.push ({
+    if (existTab !== -1) {
+       activeTab.value[existTab].data = response.data;
+       activateTab(existTab);
+    }
+    else{
+        activeTab.value.push ({
         id: tabName,
         active: true,
         data: response.data,
         columns: columns
     })
     activateTab(activeTab.value.length - 1);
+    }
+    
 }
 
+provide ('openTab', openTab);
 
 </script>
 

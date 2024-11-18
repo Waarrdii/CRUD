@@ -73,21 +73,25 @@
 </template>
 
 <script setup>
-import { useForm, usePage } from '@inertiajs/vue3';
-import { ref, defineProps, computed } from 'vue';
+import { useForm } from '@inertiajs/vue3';
+import { ref, inject, computed, onMounted } from 'vue';
 import Modal from '@/Components/Modal.vue';
+import axios from 'axios';
 
-const props = defineProps({
-    brands: Array,
-});
+const openTab = inject('openTab');
+const brands = ref([]);
+const searchQuery = ref('');
+
+
+onMounted( async () => {
+    const response = await axios.get(route('brands.showAllBrands'));
+    brands.value = response.data;
+})
 
 const filteredBrands = computed(() => {
-    return props.brands.filter(
-        brand => brand.name.includes(searchQuery.value)
-    );
+    return brands.value.filter(brand => brand.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
 });
 
-const searchQuery = ref('');
 const modalShow = ref(false);
 
 const showModal = () => {
@@ -113,6 +117,8 @@ const selectBrand = (brand) => {
 
 const submit = () => {
     form.post(route('products.store'));
+    form.reset();
+    openTab('products');
 };
 
 

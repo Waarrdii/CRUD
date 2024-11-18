@@ -8,13 +8,17 @@ import SecondaryTab from './SecondaryTab.vue';
 
 const props = defineProps({
     items: Array,
-    columns: Array
+    columns: Array,
+    tabName: {
+        type: String,
+        required: true
+    },
 });
 
 </script>
 
 <template>
-    <SecondaryTab>
+    <SecondaryTab :tabName="tabName">
         <template #header>
             <h2>Index</h2>
         </template>

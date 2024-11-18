@@ -13,18 +13,20 @@
             </div>
         </div>
     </div>
-    <div class="w-auto flex flex-start">
+    <div 
+    class="w-auto flex flex-start">
         <div v-for="(nav, index) in childTabs" :key="nav.id" v-show="nav.active">
             <div v-if="index === 0">
                 <slot />
             </div>
             <div v-else>
-                {{ index }}
+                <CreateForm :tabName ="tabName" :childTabs="childTabs" :activeChildTabsIndex="activeChildTabsIndex"/>
             </div>
         </div>
     </div>
 
-    <div class="flex flex-start space-x-2 py-2">
+    <div v-if="activeChildTabsIndex === 0"
+    class="flex flex-start space-x-2 py-2">
         <GreenButton @click="addChildTab('New Data')">New</GreenButton>
         <DangerButton>Delete</DangerButton>
         <PurpleButton>Export</PurpleButton>
@@ -34,7 +36,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, provide, ref } from 'vue';
 
 import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -42,17 +44,33 @@ import PurpleButton from '@/Components/PurpleButton.vue';
 import GreenButton from '@/Components/GreenButton.vue';
 import CloseIcons from './CloseIcons.vue';
 
+import CreateForm from './CreateForm.vue';
+
+const props = defineProps({
+    tabName: {
+        type: String,
+        required: true
+    },
+});
+
 const childTabs = ref([])
-const childTabsIndex = ref(0)
+const activeChildTabsIndex = ref(0)
 
 const activeChildTab = (index) => {
     childTabs.value.forEach((nav, i) => {
         nav.active = (i === index);
     })
+    activeChildTabsIndex.value = index;
 }
 
 const removeChildTab = (index) => {
-    childTabs.value.splice(index, 1);
+    if(index !== 0){
+        childTabs.value.splice(index, 1);
+    } if(index > 0 && activeChildTabsIndex.value >= index){
+        activeChildTabsIndex.value--;
+    }
+    activeChildTab(activeChildTabsIndex.value);
+    
 }
 const addChildTab = async (childTabName) => {
     childTabs.value.push({
@@ -68,6 +86,14 @@ onMounted(() => {
         active: true,
     })
 })
+
+const provideData ={
+    childTabs,
+    activeChildTabsIndex,
+    removeChildTab,
+}
+
+provide('provideData', provideData);
 </script>
 
 <style lang="scss" scoped></style>
